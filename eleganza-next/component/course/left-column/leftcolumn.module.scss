@@ -1,0 +1,40 @@
+.course-container {
+  display: grid;
+  grid-template-columns: 1fr 5fr; /* 两栏式布局 */
+  gap: 60px; /* 间隔 */
+}
+
+.filter-section {
+  display: inline-flex;
+  padding: 0px 30px 47px 0px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.filter-section p {
+  margin-bottom: 8px;
+}
+.checkbox-style {
+  display: none;
+
+  + label {
+    position: relative;
+    padding-left: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border: 1px solid #322826; /* 设置边框样式 */
+      border-radius: 2px;
+      background-color: transparent; /* 设置内部透明 */
+    }
+  }
+
+  &:checked + label::before {
+    background-color: #322826;
+  }
+}

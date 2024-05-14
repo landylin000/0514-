@@ -1,0 +1,42 @@
+.card-body {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    background-color: #FFFDFD;
+    padding: 20px 32px;
+    border-radius: 8px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+
+    .card-image {
+        width: 133px; /* 图片的宽度 */
+        height: 133px; /* 图片的高度 */
+        object-fit: cover; 
+        margin-right: 40px;
+    }
+
+    .text-box {
+        p {
+            line-height: 0.5;
+        }
+    }
+
+    .card-footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        align-self: stretch;
+        width: 5%;
+
+        .card-icons {
+            display: flex; 
+            flex-direction: row; 
+            align-items: center; 
+
+            img {
+                width: 16px; 
+                margin-right: 8px;
+            }
+        }
+    }
+}
