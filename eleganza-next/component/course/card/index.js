@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './card.module.scss'
 import { Link } from 'react-router-dom'
 
-export default function Card({ course , onClick }) {
+export default function Card({ course, onClick }) {
   return (
     <div className="card-row" onClick={() => onClick(course.id)}>
       <div className={styles['card-body']}>

@@ -2,8 +2,7 @@ import React from 'react'
 import styles from './leftcolumn.module.scss'
 import courseData from '../../../../data/coursesData.json'
 
-export default function CourseDetailLeft() {
-  const course = courseData[0]
+export default function CourseDetailLeft(course) {
   return (
     <>
       <div className="left-column col-6">

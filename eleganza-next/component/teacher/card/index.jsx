@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './card.module.scss'
-import teacherData from '../../../data/teachers.json'
+import teacherData from '../../../data/teachersData.json'
 
-export default function Card({ selectedCourse }) {
+const teachersPerPage = 5 // 每頁顯示的老師數量
+
+export default function Card({ filter }) {
   const [expandedIndex, setExpandedIndex] = useState(null)
   const [filteredTeacherData, setFilteredTeacherData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1) // 當前所在頁面
 
   const handleIconClick = (index) => {
     setExpandedIndex(index === expandedIndex ? null : index)
@@ -17,17 +20,26 @@ export default function Card({ selectedCourse }) {
         courses: teacher.courses.split(',').map((course) => course.trim()),
       }
     })
-    const filteredData = selectedCourse
-      ? updatedTeacherData.filter((teacher) =>
-          teacher.courses.includes(selectedCourse),
-        )
+    const filteredData = filter
+      ? updatedTeacherData.filter((teacher) => teacher.courses.includes(filter))
       : updatedTeacherData
     setFilteredTeacherData(filteredData)
-  }, [selectedCourse])
+  }, [filter])
+
+  // 根據當前頁碼和每頁顯示的老師數量計算切片的起始和結束索引
+  const indexOfLastTeacher = currentPage * teachersPerPage
+  const indexOfFirstTeacher = indexOfLastTeacher - teachersPerPage
+  const currentTeachers = filteredTeacherData.slice(
+    indexOfFirstTeacher,
+    indexOfLastTeacher,
+  )
+
+  // 分頁變更處理函數
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   return (
     <>
-      {filteredTeacherData.map((teacher, index) => (
+      {currentTeachers.map((teacher, index) => (
         <div key={index} className={styles['card-column']}>
           <div className={styles['card-row']}>
             <div className={styles['card-body']}>
@@ -63,7 +75,9 @@ export default function Card({ selectedCourse }) {
                 </div>
               </div>
               <div
-                className={`${styles['card-content']} ${expandedIndex === index ? styles.expanded : ''}`}
+                className={`${styles['card-content']} ${
+                  expandedIndex === index ? styles.expanded : ''
+                }`}
               >
                 <div className={styles['content-text']}>
                   <div className={styles['three-column-layout']}>

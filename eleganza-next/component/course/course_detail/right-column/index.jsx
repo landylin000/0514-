@@ -2,8 +2,7 @@ import React from 'react'
 import styles from './rightcolumn.module.scss'
 import courseData from '../../../../data/coursesData.json'
 
-export default function CourseDetailRight() {
-  const course = courseData[0]
+export default function CourseDetailRight(course) {
   return (
     <>
       <div className="right-column col-6">
