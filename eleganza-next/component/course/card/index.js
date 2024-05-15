@@ -6,11 +6,13 @@ export default function Card({ course, onClick }) {
   return (
     <div className="card-row" onClick={() => onClick(course.id)}>
       <div className={styles['card-body']}>
-        <img
-          src={`/images/course_images/${course.course_img}`}
-          className={styles['card-image']}
-          alt=""
-        />
+        <div className={styles['image-container']}>
+          <img
+            src={`/images/course_images/${course.course_img}`}
+            className={styles['card-image']}
+            alt=""
+          />
+        </div>
         <div className={styles['card-content']}>
           <div className={styles['ul-container']}>
             <div className={styles['text-box']}>

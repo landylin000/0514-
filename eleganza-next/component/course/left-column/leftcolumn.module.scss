@@ -9,10 +9,13 @@
   padding: 0px 30px 47px 0px;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 20px;
+  margin-bottom: -40px;
 }
 .filter-section p {
   margin-bottom: 8px;
 }
+
 .checkbox-style {
   display: none;
 
@@ -37,4 +40,42 @@
   &:checked + label::before {
     background-color: #322826;
   }
+}
+
+.date-picker {
+  width: 100%; /* 使日期选择器占满整个容器宽度 */
+}
+
+.date-picker .react-datepicker {
+  border: 5px solid #3b9fa1 !important; /* 设置边框样式 */
+  border-radius: 5px !important; /* 设置边框圆角 */
+}
+
+.date-picker .react-datepicker__header {
+  background-color: #f0f0f0 !important; /* 设置标题背景颜色 */
+  border-bottom: 1px solid #63e41e !important; /* 设置标题底部边框 */
+}
+
+.date-picker .react-datepicker__current-month,
+.date-picker .react-datepicker-time__header,
+.date-picker .react-datepicker-year-header {
+  color: #26322a !important; /* 设置标题文字颜色 */
+}
+
+.date-picker .react-datepicker__day-name,
+.date-picker .react-datepicker__day,
+.date-picker .react-datepicker__time-name {
+  color: #322826 !important; /* 设置日期文字颜色 */
+}
+
+.date-picker .react-datepicker__day--selected,
+.date-picker .react-datepicker__day--in-selecting-range,
+.date-picker .react-datepicker__day--in-range {
+  background-color: #dd4729 !important; /* 设置选中日期背景颜色 */
+  color: #fff !important; /* 设置选中日期文字颜色 */
+}
+
+.date-picker .react-datepicker__day--keyboard-selected {
+  background-color: #322826 !important; /* 设置键盘选中日期背景颜色 */
+  color: #fff !important; /* 设置键盘选中日期文字颜色 */
 }

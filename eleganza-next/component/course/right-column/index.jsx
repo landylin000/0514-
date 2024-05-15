@@ -9,46 +9,49 @@ import styles from './right-column.module.scss'
 export default function Rightcolumn({ filters, sortOrder }) {
   const [courses, setCourses] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
+  const [totalCourses, setTotalCourses] = useState(0) // 新增 totalCourses state
   const coursesPerPage = 6
   const router = useRouter()
 
   useEffect(() => {
-    // 创建教师经验映射
-    const teacherExperienceMap = teachersData.reduce((map, teacher) => {
-      map[teacher.teacher_id] = teacher.t_years
+    const teacherMap = teachersData.reduce((map, teacher) => {
+      map[teacher.teacher_id] = {
+        t_years: teacher.t_years,
+        t_name: teacher.t_name,
+      }
       return map
     }, {})
 
-    // 应用所有过滤条件
-    let filteredCourses = courseData.filter((course) =>
-      Object.entries(filters).every(([key, value]) => {
-        if (!value) return true
-        const [filterKey, filterValues] = key.split('-')
-        if (filterKey === 't_years') {
-          const years = teacherExperienceMap[course.teacher_id]
-          const valuesArray = filterValues.split(',')
-          return valuesArray.includes(String(years))
-        }
-        return course[filterKey] == filterValues
-      }),
-    )
+    const enhancedCourses = courseData.map((course) => {
+      const teacher = teacherMap[course.teacher_id]
+      return {
+        ...course,
+        teacher_name: teacher ? teacher.t_name : '未指定',
+        t_years: teacher ? teacher.t_years : null,
+      }
+    })
 
-    // 排序
+    let filteredCourses = enhancedCourses.filter((course) => {
+      return Object.entries(filters).every(([key, value]) => {
+        if (!value) return true // 如果过滤值为空，不过滤该条件
+        if (key === 't_years') {
+          return value.includes(String(course.t_years)) // 教师年资过滤
+        }
+        if (key === 'course_style') {
+          return value.includes(course.course_style) // 音乐风格过滤
+        }
+        return course[key] == value // 其他过滤
+      })
+    })
+
+    // 排序逻辑
     if (sortOrder === 'priceAsc') {
       filteredCourses.sort((a, b) => a.course_price - b.course_price)
     } else if (sortOrder === 'priceDesc') {
       filteredCourses.sort((a, b) => b.course_price - a.course_price)
     }
 
-    // 分页处理
-    const totalFilteredCourses = filteredCourses.length
-    const totalPages = Math.ceil(totalFilteredCourses / coursesPerPage)
-    if (currentPage > totalPages) {
-      setCurrentPage(1)
-    } else if (currentPage < 1) {
-      setCurrentPage(totalPages)
-    }
-
+    setTotalCourses(filteredCourses.length) // 更新 totalCourses
     const indexOfLastCourse = currentPage * coursesPerPage
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage
     const currentCourses = filteredCourses.slice(
@@ -57,6 +60,10 @@ export default function Rightcolumn({ filters, sortOrder }) {
     )
 
     setCourses(currentCourses)
+    const totalPages = Math.ceil(filteredCourses.length / coursesPerPage)
+    if (currentPage > totalPages) {
+      setCurrentPage(1) // 如果当前页超过总页数，重置为第一页
+    }
   }, [filters, sortOrder, currentPage])
 
   const handleCardClick = (courseId) => {
@@ -77,10 +84,10 @@ export default function Rightcolumn({ filters, sortOrder }) {
           onClick={() => handleCardClick(course.course_id)}
         />
       ))}
-      {courses.length > coursesPerPage && (
+      {totalCourses > 0 && (
         <Pagination
           currentPage={currentPage}
-          totalCourses={courses.length}
+          totalCourses={totalCourses} // 传递 totalCourses
           coursesPerPage={coursesPerPage}
           onChange={handlePageChange}
         />

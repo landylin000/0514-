@@ -2,11 +2,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #9c9191;
 
   ul {
     display: flex;
     list-style-type: none;
-    gap: 8;
+    gap: 8px;
     padding: 0;
     margin: 0;
 
@@ -21,6 +23,7 @@
         text-decoration: none;
         background-color: transparent;
         border-radius: 4px;
+        margin-bottom: 10px;
 
         &:hover {
           background-color: var(--color-text-dark);
@@ -44,28 +47,63 @@
     gap: 4px;
   }
 
-  /* 分隔線 */
-  .navbar-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--color-primary-medium);
-    margin-top: 10px;
-    margin-bottom: 40px;
+  .search-and-sort {
+    display: flex;
+    align-items: center;
+    gap: 10px; // 调整元素之间的间距
+
+    button img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    input,
+    select {
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      color: #333;
+      font-size: 16px; // 确保字体大小一致
+    }
+  }
+
+  .sort-menu {
+    position: relative;
+    display: inline-block;
+
+    select {
+      display: none;
+      position: absolute;
+      top: 100%; // 使下拉菜单显示在按钮下方
+      left: 0;
+      margin-top: 4px; // 调整间距
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      z-index: 1;
+    }
+
+    &.show select {
+      display: block;
+    }
   }
 }
+
 @media screen and (max-width: 375px) {
   .navbar {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    /* width: 375px; */
 
     ul {
       display: flex;
       flex-wrap: nowrap;
     }
 
-    ul li a {
+    ul li button {
       white-space: nowrap;
     }
 

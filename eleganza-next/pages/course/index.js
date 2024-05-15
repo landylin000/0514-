@@ -1,31 +1,31 @@
-import React, { useState } from 'react'
-import Breadcrumb from '@/component/course/breadcrumb'
-import Navbar from '@/component/course/navbar'
-import Leftcolumn from '@/component/course/left-column'
-import Rightcolumn from '@/component/course/right-column'
-import styles from './course.module.scss'
+import React, { useState, useEffect } from 'react';
+import Breadcrumb from '@/component/course/breadcrumb';
+import Navbar from '@/component/course/navbar';
+import Leftcolumn from '@/component/course/left-column';
+import Rightcolumn from '@/component/course/right-column';
+import styles from './course.module.scss';
 
 export default function CourseList() {
-  const [filters, setFilters] = useState({})
-  const [sortOrder, setSortOrder] = useState('priceAsc')
+  const [filters, setFilters] = useState({});
+  const [sortOrder, setSortOrder] = useState('priceAsc');
 
   const handleCourseFilter = (courseClassId) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      course_class_id: courseClassId === null ? null : courseClassId,
-    }))
-  }
+      course_class_id: courseClassId,
+    }));
+  };
 
   const handleSortChange = (sortType) => {
-    setSortOrder(sortType)
-  }
+    setSortOrder(sortType);
+  };
 
-  const handleFilterChange = (filterName, isChecked) => {
+  const handleFilterChange = (filterType, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [filterName]: isChecked ? filterName.split('-')[1] : null,
-    }))
-  }
+      [filterType]: value,
+    }));
+  };
 
   return (
     <div>
@@ -39,5 +39,5 @@ export default function CourseList() {
         <Rightcolumn filters={filters} sortOrder={sortOrder} />
       </div>
     </div>
-  )
+  );
 }

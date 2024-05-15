@@ -1,27 +1,30 @@
 .pagination {
   display: flex;
   justify-content: center;
-  margin-bottom: 100px;
-  margin-top: 100px;
+  align-items: center;
+  list-style: none;
+  padding: 20px 0; /* 调整分页组件的上和下的间距 */
+  margin-bottom: 50px;
 
-  a {
-    text-decoration: none;
-    background-color: transparent;
-    color: #322826;
-    flex-direction: column;
+  button {
+    background: none;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30px; /* 设置宽度和高度为相同值以实现正方形 */
+    height: 30px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 10px;
     border-radius: 4px;
-    gap: 10px;
 
     &:hover {
-      background-color: #322826;
-      color: #fffdfd;
+      background-color: #f0f0f0;
     }
+  }
 
-    img {
-      width: 16px;
-      height: 16px;
-    }
+  .active {
+    background-color: #333;
+    color: #fff;
   }
 }

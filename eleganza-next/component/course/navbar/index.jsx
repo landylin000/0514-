@@ -1,115 +1,73 @@
-import React, { useState } from 'react'
-import styles from './navbar.module.scss'
+import React, { useState } from 'react';
+import styles from './navbar.module.scss';
 
 export default function Navbar({ onCourseFilter, onSortChange }) {
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [showSortMenu, setShowSortMenu] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const categories = [
+    { id: 1, name: '初階個別課' },
+    { id: 2, name: '中階個別課' },
+    { id: 3, name: '高階個別課' },
+    { id: 4, name: '團體班' },
+  ];
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId)
-    if (typeof onCourseFilter === 'function') {
-      onCourseFilter(categoryId)
-    }
-  }
+    setSelectedCategory(categoryId);
+    onCourseFilter(categoryId);
+  };
 
-  const toggleSortMenu = () => {
-    setShowSortMenu(!showSortMenu)
-  }
+  const handleSortChange = (event) => {
+    onSortChange(event.target.value);
+  };
 
-  const handleSortSelection = (sortType) => {
-    if (typeof onSortChange === 'function') {
-      onSortChange(sortType)
-    }
-    setShowSortMenu(false) // Close menu after selection
-  }
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    // 可以在此处处理搜索逻辑
+  };
 
   return (
-    <>
-      <nav className={styles.navbar}>
-        <ul>
-          <li>
+    <nav className={styles.navbar}>
+      <ul>
+        <li>
+          <button
+            className={!selectedCategory ? styles.active : ''}
+            onClick={() => handleCategoryClick(null)}
+          >
+            全部課程
+          </button>
+        </li>
+        {categories.map((category) => (
+          <li key={category.id}>
             <button
-              className={selectedCategory === null ? styles.active : ''}
-              onClick={() => handleCategoryClick(null)}
+              className={selectedCategory === category.id ? styles.active : ''}
+              onClick={() => handleCategoryClick(category.id)}
             >
-              全部課程
+              {category.name}
             </button>
           </li>
-          <li>
-            <button
-              className={selectedCategory === 1 ? styles.active : ''}
-              onClick={() => handleCategoryClick(1)}
-            >
-              初階個別課
-            </button>
-          </li>
-          <li>
-            <button
-              className={selectedCategory === 2 ? styles.active : ''}
-              onClick={() => handleCategoryClick(2)}
-            >
-              中階個別課
-            </button>
-          </li>
-          <li>
-            <button
-              className={selectedCategory === 3 ? styles.active : ''}
-              onClick={() => handleCategoryClick(3)}
-            >
-              高階個別課
-            </button>
-          </li>
-          <li>
-            <button
-              className={selectedCategory === 4 ? styles.active : ''}
-              onClick={() => handleCategoryClick(4)}
-            >
-              團體班
-            </button>
-          </li>
-          <li>
-            <button
-              className={selectedCategory === 5 ? styles.active : ''}
-              onClick={() => handleCategoryClick(5)}
-            >
-              大師班
-            </button>
-          </li>
-        </ul>
-        <div className={styles['navbar-icons']}>
-          <a href="">
-            <img
-              className={styles.search}
-              src="/icons/icon-search.svg"
-              alt="Search"
-            />
-          </a>
-          <div className={styles['navbar-icons2']}>
-            <button onClick={toggleSortMenu}>排序</button>
-            {showSortMenu && (
-              <div className={styles['sort-menu']}>
-                <button onClick={() => handleSortSelection('priceAsc')}>
-                  價格升序
-                </button>
-                <button onClick={() => handleSortSelection('priceDesc')}>
-                  價格降序
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-      <hr />
-      <div className={styles['filter-container']}>
-        <a className={styles.Filter} href="#">
-          篩選條件
-          <img src="/icons/icon-chevron-down.svg" alt="Filter" />
-        </a>
-        <a className={styles.sort} href="">
-          sort by
-          <img src="/icons/icon-chevron-down.svg" alt="Sort" />
-        </a>
+        ))}
+      </ul>
+      <div className={styles['search-and-sort']}>
+        <img src="/icons/icon-search.svg" alt="Search" />
+        <input
+          type="text"
+          placeholder="搜尋課程..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+        />
+        <label htmlFor="sortSelect" className={styles.sortLabel}>排序</label>
+        <select
+          id="sortSelect"
+          onChange={handleSortChange}
+          className={styles.sortSelect}
+        >
+          <option value="">請選擇</option>
+          <option value="priceAsc">價格從低到高</option>
+          <option value="priceDesc">價格從高到低</option>
+        </select>
       </div>
-    </>
-  )
+    </nav>
+  );
 }
