@@ -34,8 +34,10 @@ export default function CourseList() {
       <Breadcrumb />
       <Navbar
         courseList={courseData}
+        courseList={courseData}
         onCourseFilter={handleCourseFilter}
         onSortChange={handleSortChange}
+        onSearchChange={setSearchCourseList}
         onSearchChange={setSearchCourseList}
       />
       <div className={styles['course-container']}>
