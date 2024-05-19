@@ -1,6 +1,6 @@
 // TeacherList.jsx
 import React, { useState, useEffect } from 'react'
-import Breadcrumb from '@/component/teacher/breadcrumb'
+// import Breadcrumb from '@/component/teacher/breadcrumb'
 import Card from '@/component/teacher/card'
 import Pagination from '@/component/course/pagination'
 import styles from './teacher.module.scss'

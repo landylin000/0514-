@@ -17,7 +17,7 @@ const experienceMapping = {
 const musicStyleOptions = ['古典', '爵士/藍調', '流行']
 const teachingExperienceOptions = ['5年以下', '5年至10年', '10年以上']
 
-export default function Leftcolumn({ onFilterChange }) {
+export default function Leftcolumn({ filters, onFilterChange }) {
   const handleCheckboxChange = (event, category) => {
     const { checked, value } = event.target
     const filterValues =
@@ -32,11 +32,11 @@ export default function Leftcolumn({ onFilterChange }) {
   }
 
   const handleStartDateChange = (startDate) => {
-    onFilterChange('course_start_date', startDate)
+    onFilterChange('dateSearchRange', {startDate: startDate, endDate:null})
   }
 
   const handleEndDateChange = (endDate) => {
-    onFilterChange('course_end_date', endDate)
+    onFilterChange('dateSearchRange', { startDate: filters.dateSearchRange?.startDate, endDate: endDate })
   }
 
   return (
