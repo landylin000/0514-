@@ -1,7 +1,7 @@
 .course-container {
   display: grid;
-  grid-template-columns: 1fr 5fr; /* 两栏式布局 */
-  gap: 60px; /* 间隔 */
+  grid-template-columns: 1fr 5fr; 
+  gap: 60px; 
 }
 
 .filter-section {
@@ -31,9 +31,9 @@
       transform: translateY(-50%);
       width: 16px;
       height: 16px;
-      border: 1px solid #322826; /* 设置边框样式 */
+      border: 1px solid #322826; 
       border-radius: 2px;
-      background-color: transparent; /* 设置内部透明 */
+      background-color: transparent; 
     }
   }
 
@@ -43,39 +43,39 @@
 }
 
 .date-picker {
-  width: 100%; /* 使日期选择器占满整个容器宽度 */
+  width: 100%; 
 }
 
 .date-picker .react-datepicker {
-  border: 5px solid #3b9fa1 !important; /* 设置边框样式 */
-  border-radius: 5px !important; /* 设置边框圆角 */
+  border: 5px solid #3b9fa1 !important; 
+  border-radius: 5px !important; 
 }
 
 .date-picker .react-datepicker__header {
-  background-color: #f0f0f0 !important; /* 设置标题背景颜色 */
-  border-bottom: 1px solid #63e41e !important; /* 设置标题底部边框 */
+  background-color: #f0f0f0 !important; 
+  border-bottom: 1px solid #63e41e !important; 
 }
 
 .date-picker .react-datepicker__current-month,
 .date-picker .react-datepicker-time__header,
 .date-picker .react-datepicker-year-header {
-  color: #26322a !important; /* 设置标题文字颜色 */
+  color: #26322a !important; 
 }
 
 .date-picker .react-datepicker__day-name,
 .date-picker .react-datepicker__day,
 .date-picker .react-datepicker__time-name {
-  color: #322826 !important; /* 设置日期文字颜色 */
+  color: #322826 !important; 
 }
 
 .date-picker .react-datepicker__day--selected,
 .date-picker .react-datepicker__day--in-selecting-range,
 .date-picker .react-datepicker__day--in-range {
-  background-color: #dd4729 !important; /* 设置选中日期背景颜色 */
-  color: #fff !important; /* 设置选中日期文字颜色 */
+  background-color: #dd4729 !important; 
+  color: #fff !important; 
 }
 
 .date-picker .react-datepicker__day--keyboard-selected {
-  background-color: #322826 !important; /* 设置键盘选中日期背景颜色 */
-  color: #fff !important; /* 设置键盘选中日期文字颜色 */
+  background-color: #322826 !important; 
+  color: #fff !important; 
 }

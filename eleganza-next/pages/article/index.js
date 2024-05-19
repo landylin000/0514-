@@ -5,7 +5,7 @@ import Cards from '@/component/article/card'
 import Pagination from '@/component/article/pagination'
 // import articles from '@/data/articles.json'
 import styles from './index.module.scss'
-import FavIcon from '@/component/article/fav/fav-icon'
+//import FavIcon from '@/component/article/fav/fav-icon'
 
 
 // 載入指示動畫
@@ -110,7 +110,6 @@ export default function Index() {
         showSort={true}
         showSearch={true}
       />
-      <FavIcon/>
       <div className={styles['cards-container']}>
         {currentArticles.map((article) => (
           <Cards

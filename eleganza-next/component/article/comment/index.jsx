@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import styles from './comment.module.scss'
 import CommentCard from './CommentCard'
 import StarRating from '../star-rating'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function CommentsPage({
-  userId,
   articleId,
   productId,
   courseId,
-  comments: initialComments, // 使用不同的名字来避免命名冲突
+  comments: initialComments, // 使用不同的名字來避免命名衝突
 }) {
+  const { auth } = useAuth()
   const [showModal, setShowModal] = useState(false)
-  const [comments, setComments] = useState(initialComments) // 初始化时使用传入的评论数据
+  const [comments, setComments] = useState(initialComments) //初始化時使用傳入的評論數據
 
   const addCommentToList = (newComment) => {
     setComments((prevComments) => [...prevComments, newComment])
@@ -30,7 +31,7 @@ export default function CommentsPage({
       {showModal && ( // 根據 showModal 的值顯示或隱藏模態窗口
         <Modal
           toggleModal={toggleModal}
-          userId={userId}
+          userId={auth.userId} // 傳遞 userId
           articleId={articleId}
           productId={productId}
           courseId={courseId}
@@ -62,9 +63,16 @@ function Modal({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    // 判斷登入
+    if (!userId) {
+      alert('請先登入，再提交評論。')
+      return
+    }
+
     //會員資料
     const formData = {
-      userId: 0, // 用户ID 等會員接起來
+      userId: userId, // 用户ID 等會員接起來
       articleId: articleId, // 文章ID
       productId: productId,
       courseId: courseId,
@@ -73,7 +81,7 @@ function Modal({
     }
     console.log(formData) // 列印表單
 
-    // 模擬提交到後端
+    // 提交到後端
     try {
       const response = await fetch('http://localhost:3005/api/comments', {
         method: 'POST',
@@ -81,11 +89,6 @@ function Modal({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData), //表單打印測試
-
-        // body: JSON.stringify({
-        //   rating,
-        //   commentText,
-        // }),
       })
 
       if (response.ok) {

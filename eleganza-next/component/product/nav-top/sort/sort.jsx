@@ -12,6 +12,15 @@ export default function Sort({ selectedOption, handleOptionClick }) {
         <img className="mb-1" src="/icons/icon-chevron-down.svg" alt="" />
       </span>
       <ul className="dropdown-menu" aria-labelledby="dropdown">
+      <li>
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={() => handleOptionClick('預設排序')}
+          >
+            預設排序
+          </a>
+        </li>
         <li>
           <a
             className="dropdown-item"

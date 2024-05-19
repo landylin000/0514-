@@ -38,6 +38,11 @@
 
 }
 
+.minus, .plus, .like{
+   user-select: none;
+   cursor: pointer;
+}
+
 @media (max-width: 992px) {
 
   .product-info {

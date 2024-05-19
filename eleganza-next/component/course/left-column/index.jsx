@@ -3,9 +3,9 @@ import CustomDatePicker from '../CustomDatePicker'
 import styles from './leftcolumn.module.scss'
 
 const styleMapping = {
-  古典: 'Classical',
-  '爵士/藍調': 'Jazz/Blues',
-  流行: 'Pop',
+  古典: ['Classical'],
+  '爵士/藍調': ['Jazz/Blues'],
+  流行: ['Pop'],
 }
 
 const experienceMapping = {
@@ -25,9 +25,9 @@ export default function Leftcolumn({ onFilterChange }) {
         ? styleMapping[value]
         : experienceMapping[value]
     if (checked) {
-      onFilterChange(category, filterValues)
+      onFilterChange(category, filterValues, 'add')
     } else {
-      onFilterChange(category, null) // 清除此分类的过滤
+      onFilterChange(category, filterValues, 'remove')
     }
   }
 

@@ -5,78 +5,17 @@ import FilterSize from './filter-cate/filter-size'
 
 export default function FilterLeft({
   products,
+  setProducts,
   checkboxStatus,
   handleCheckboxStatus,
   productCate,
 }) {
   const repeat = new Set()
   const sortCate = ['頂板', '側板', '指板', '琴頸']
-  const queryParams = []
-  console.log(queryParams)
+  
 
-  // filter查詢字串 => 用陣列取值並轉換為查詢字串 這個真的幹你娘超複雜
-
-  // 取出key值
-  // 判斷key的布林值
-  // 判斷key值屬於哪個欄位
-  // key值為true加入陣列，反之則移除
-  // 將處理過後的key值加入查詢字串
-
-  const addedKeys = new Set()
-  const filterKeys = Object.entries(checkboxStatus)
-  console.log(filterKeys)
-  filterKeys.forEach(([key, value]) => {
-    products.forEach((product) => {
-      if (addedKeys.has(key)) {
-        return
-      }
-      if (product.brand === key && value === true) {
-        addedKeys.add(key)
-        queryParams.push(`brand=${key}`)
-
-      } else if (product.size == key && value === true) {
-        addedKeys.add(key)
-        queryParams.push(`size=${key}`)
-
-
-
-        // 這邊需要轉換為case
-      } else if (product.top == key.replace(/\d/g, '') && value === true) {
-        let formattedKey = key.replace(/\d/g, '')
-        addedKeys.add(key)
-        queryParams.push(`top=${formattedKey}`)
-
-      } else if (
-        product.back_and_sides == key.replace(/\d/g, '') &&
-        value === true
-      ) {
-        const formattedKey = key.replace(/\d/g, '')
-        addedKeys.add(key)
-        queryParams.push(`back_and_sides=${formattedKey}`)
-
-      } else if (product.neck == key.replace(/\d/g, '') && value === true) {
-        const formattedKey = key.replace(/\d/g, '')
-        addedKeys.add(key)
-        queryParams.push(`neck=${formattedKey}`)
-
-      } else if (
-        product.fingerboard == key.replace(/\d/g, '') &&
-        value === true
-      ) {
-        const formattedKey = key.replace(/\d/g, '')
-        addedKeys.add(key)
-        queryParams.push(`fingerboard=${formattedKey}`)
-      }
-    })
-  })
-
-  console.log(queryParams)
-
-  // 向後端發送請求
   // 查詢字串示例:
   // http://localhost:3005/api/products?brand=Karl%Höfner,Artino&size=4&top=楓木
-
-  //   console.log(checkboxStatus)
 
   const renderBrandFilter = () => {
     return (

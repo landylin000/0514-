@@ -1,73 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './nav-top.module.scss'
 import BreadCrumb from './bread-crumb/bread-crumb'
 import Sort from './sort/sort'
 import FilterLeft from '../filter-left'
+import Searchbar from './search-bar/Searchbar'
 
 export default function NavTop({
+  selectedOption,
+  handleOptionClick,
   products,
   setProducts,
   checkboxStatus,
   handleCheckboxStatus,
-  setCheckboxStatus,
-  cates,
-  setProductCate,
-  productCate
+  productCate,
+  handleCateClick,
+  handleClick,
+  showInput,
+  handleSearch,
+  params
 }) {
-  // 搜尋框動畫
-  //   const [showInput, setShowInput] = useState(false)
-  //   const handleClick = () => {
-  //     setShowInput(!showInput)
-  //   }
+  const cates = ['小提琴', '提琴盒', '提琴弓', '松香']
 
-  // sort元件狀態提升
-  const [selectedOption, setSelectedOption] = useState('排序')
-  const handleOptionClick = (option) => {
-    setSelectedOption(option)
-  }
-
-  //   const [checkboxStatus, setCheckboxStatus] = useState(false)
-  //   const handleCheckboxStatus = (option) => {
-  //     setCheckboxStatus((prevStatus) => ({
-  //       ...prevStatus,
-  //       [option]: !prevStatus[option],
-  //     }))
-  //   }
-
-  // 商品類別篩選
-
-  const handleCateClick = async (cateIndex) => {
-    setProductCate(cateIndex)
-    const url = `http://localhost:3005/api/products`
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cateIndex }),
-      })
-      // console.log(body)
-      const data = await res.json()
-
-      if (Array.isArray(data.data.products)) {
-        setProducts(data.data.products)
-        setCheckboxStatus(false)
-        //   console.log('success')
-      } else {
-        alert('u mom is dead')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  // console.log(productCate)
-  //   console.log(checkboxStatus)
+  //   搜尋框
 
   return (
     <>
       <div className={styles['nav-top']}>
-        <BreadCrumb />
+        <BreadCrumb handleClick={handleClick} showInput={showInput} />
         <div>
           <div className="d-flex justify-content-between align-content-center">
             <div
@@ -106,9 +65,12 @@ export default function NavTop({
                   </button>
                 )} */}
 
-                <button type="button">
-                  <img className="mb-1" src="/icons/icon-search.svg" alt="" />
-                </button>
+                <Searchbar
+                  // showInput={showInput}
+                  handleClick={handleClick}
+                  showInput={showInput}
+                  handleSearch={handleSearch}
+                />
                 <Sort
                   selectedOption={selectedOption}
                   handleOptionClick={handleOptionClick}
@@ -153,6 +115,7 @@ export default function NavTop({
               <div className="offcanvas-body">
                 <FilterLeft
                   products={products}
+                  setProducts={setProducts}
                   checkboxStatus={checkboxStatus}
                   handleCheckboxStatus={handleCheckboxStatus}
                   productCate={productCate}

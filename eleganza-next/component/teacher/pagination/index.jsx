@@ -1,49 +1,50 @@
-import React from 'react'
-import styles from './pagination.module.scss'
+import React from 'react';
+import styles from './pagination.module.scss';
 
 export default function Pagination({
   currentPage,
-  totalItems, // 通用名称，可以代表 totalCourses 或 totalTeachers
-  itemsPerPage, // 通用名称，可以代表 coursesPerPage 或 teachersPerPage
-  onChange, // 通用处理函数，可以代表 paginate 函数
+  totalItems,
+  itemsPerPage,
+  onChange,
 }) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // 如果总数小于或等于每页显示的数量，不显示分页控件
   if (totalItems <= itemsPerPage) {
-    return null
+    return null; 
   }
 
-  const pageNumbers = []
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i)
-  }
+  const changePage = (page) => {
+    window.scrollTo(0, 0); 
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      onChange(page);
+    }
+  };
 
   return (
     <div className={styles.pagination}>
       <button
-        className={`${styles['pagination-icons']} ${currentPage > 1 ? '' : styles.disabled}`}
-        onClick={() => currentPage > 1 && onChange(currentPage - 1)}
+        className={`${styles['pagination-icon']} ${currentPage > 1 ? '' : styles.disabled}`}
+        onClick={() => changePage(currentPage - 1)}
         disabled={currentPage <= 1}
       >
         <img src="/icons/icon-chevron-left.svg" alt="Previous" />
       </button>
-      {pageNumbers.map((number) => (
+      {[...Array(totalPages).keys()].map((number) => (
         <button
-          key={number}
-          className={`${styles['pagination-link']} ${number === currentPage ? styles.active : ''}`}
-          onClick={() => onChange(number)}
+          key={number + 1}
+          className={`${styles['pagination-button']} ${number + 1 === currentPage ? styles.active : ''}`}
+          onClick={() => changePage(number + 1)}
         >
-          {number}
+          {number + 1}
         </button>
       ))}
       <button
-        className={`${styles['pagination-icons']} ${currentPage < totalPages ? '' : styles.disabled}`}
-        onClick={() => currentPage < totalPages && onChange(currentPage + 1)}
+        className={`${styles['pagination-icon']} ${currentPage < totalPages ? '' : styles.disabled}`}
+        onClick={() => changePage(currentPage + 1)}
         disabled={currentPage >= totalPages}
       >
         <img src="/icons/icon-chevron-right.svg" alt="Next" />
       </button>
     </div>
-  )
+  );
 }

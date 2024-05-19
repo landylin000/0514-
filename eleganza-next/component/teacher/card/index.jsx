@@ -1,45 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './card.module.scss'
-import teacherData from '../../../data/teachersData.json'
 
-const teachersPerPage = 5 // 每頁顯示的老師數量
-
-export default function Card({ filter }) {
+export default function Card({ teachers }) {
   const [expandedIndex, setExpandedIndex] = useState(null)
-  const [filteredTeacherData, setFilteredTeacherData] = useState([])
-  const [currentPage, setCurrentPage] = useState(1) // 當前所在頁面
 
   const handleIconClick = (index) => {
-    setExpandedIndex(index === expandedIndex ? null : index)
+    setExpandedIndex(expandedIndex === index ? null : index)
   }
-
-  useEffect(() => {
-    const updatedTeacherData = teacherData.map((teacher) => {
-      return {
-        ...teacher,
-        courses: teacher.courses.split(',').map((course) => course.trim()),
-      }
-    })
-    const filteredData = filter
-      ? updatedTeacherData.filter((teacher) => teacher.courses.includes(filter))
-      : updatedTeacherData
-    setFilteredTeacherData(filteredData)
-  }, [filter])
-
-  // 根據當前頁碼和每頁顯示的老師數量計算切片的起始和結束索引
-  const indexOfLastTeacher = currentPage * teachersPerPage
-  const indexOfFirstTeacher = indexOfLastTeacher - teachersPerPage
-  const currentTeachers = filteredTeacherData.slice(
-    indexOfFirstTeacher,
-    indexOfLastTeacher,
-  )
-
-  // 分頁變更處理函數
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   return (
     <>
-      {currentTeachers.map((teacher, index) => (
+      {teachers.map((teacher, index) => (
         <div key={index} className={styles['card-column']}>
           <div className={styles['card-row']}>
             <div className={styles['card-body']}>
@@ -47,7 +18,7 @@ export default function Card({ filter }) {
                 <img
                   src={`/images/teacher_images/${teacher.t_img}`}
                   className={styles['card-image']}
-                  alt=""
+                  alt={`Teacher ${teacher.t_name}`}
                 />
               </div>
               <div className={styles['card-header']}>
@@ -56,9 +27,9 @@ export default function Card({ filter }) {
                 </div>
                 <div className={styles['text-box']}>
                   <ul>
-                    <li>學歷:{teacher.education}</li>
-                    <li>教學年資:{teacher.t_years}年</li>
-                    <li>教學經歷:{teacher.experience}</li>
+                    <li>學歷: {teacher.education}</li>
+                    <li>教學年資: {teacher.t_years}年</li>
+                    <li>曾獲獎項: {teacher.winning}</li>
                   </ul>
                 </div>
               </div>
@@ -68,16 +39,18 @@ export default function Card({ filter }) {
                   onClick={() => handleIconClick(index)}
                 >
                   <img
-                    src="/icons/icon-chevron-down.svg"
-                    alt=""
+                    src={
+                      expandedIndex === index
+                        ? '/icons/icon-chevron-up.svg'
+                        : '/icons/icon-chevron-down.svg'
+                    }
+                    alt="Toggle Details"
                     className="expand-icon"
                   />
                 </div>
               </div>
               <div
-                className={`${styles['card-content']} ${
-                  expandedIndex === index ? styles.expanded : ''
-                }`}
+                className={`${styles['card-content']} ${expandedIndex === index ? styles.expanded : ''}`}
               >
                 <div className={styles['content-text']}>
                   <div className={styles['three-column-layout']}>
@@ -86,7 +59,7 @@ export default function Card({ filter }) {
                       <p>{teacher.introduction}</p>
                     </div>
                     <div className={styles.column}>
-                      <p>學經歷</p>
+                      <p>教學經歷</p>
                       <p>{teacher.experience}</p>
                     </div>
                     <div className={styles.column}>
@@ -101,9 +74,7 @@ export default function Card({ filter }) {
             </div>
           </div>
           <div
-            className={`${styles['card-row']} ${
-              expandedIndex === index ? styles['expanded-row'] : ''
-            }`}
+            className={`${styles['card-row']} ${expandedIndex === index ? styles['expanded-row'] : ''}`}
           ></div>
         </div>
       ))}

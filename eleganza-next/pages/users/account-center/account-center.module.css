@@ -221,7 +221,7 @@
           cursor: pointer; /* 添加指针样式，表明可点击 */
        }
 
-       .xsbtn a {
+       .xsbtn button {
           text-decoration: none;
           color: var(--color-text-light);
           font-family: var(--font-noto-sans);
@@ -239,4 +239,9 @@
           /* 可选：悬停在按钮上时链接的样式 */
           /* color: 新的链接颜色 */
        }
+ }
+ .error{
+   color: var(--color-danger);
+   margin-block: 0;
+   font-size: var(--fs-hint);
  }

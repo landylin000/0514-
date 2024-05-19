@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   list-style: none;
-  padding: 20px 0; /* 调整分页组件的上和下的间距 */
+  padding: 20px 0; 
   margin-bottom: 50px;
 
   button {
@@ -11,7 +11,7 @@
     margin: 0 5px;
     cursor: pointer;
     font-size: 16px;
-    width: 30px; /* 设置宽度和高度为相同值以实现正方形 */
+    width: 30px; 
     height: 30px;
     display: flex;
     justify-content: center;

@@ -1,16 +1,17 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./",
-    "module": "commonjs",
-    "paths": {
-      "##/*": ["./*"],
-      "#configs/*": ["./configs/*"],
-      "#data/*": ["./data/*"],
-      "#db-helpers/*": ["./db-helpers/*"],
-      "#middlewares/*": ["./middlewares/*"],
-      "#services/*": ["./services/*"],
-      "#utils/*": ["./utils/*"]
+    "compilerOptions": {
+      "baseUrl": "./",
+      "module": "commonjs",
+      "paths": {
+        "##/*": ["./*"],
+        "#configs/*": ["./configs/*"],
+        "#data/*": ["./data/*"],
+        "#db-helpers/*": ["./db-helpers/*"],
+        "#middlewares/*": ["./middlewares/*"],
+        "#services/*": ["./services/*"],
+        "#utils/*": ["./utils/*"]
+      }
     },
-  },
-  "exclude": ["node_modules"]
-}
+    "exclude": ["node_modules"]
+  }
+  
