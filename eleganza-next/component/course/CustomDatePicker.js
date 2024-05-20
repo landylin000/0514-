@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './DateTimePickerButtonStyles.module.css'
 
-function CustomDatePicker({ getStartDate, getEndDate }) {
+function CustomDatePicker({ getStartDate, getEndDate, calendarIsClear }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
@@ -34,6 +34,13 @@ function CustomDatePicker({ getStartDate, getEndDate }) {
     daysInRangeElements.forEach(x => x.style.color = '#fff')
     getEndDate(endDate, 'dateSearchRange');
   },[endDate])
+
+  useEffect(()=>{
+    if(calendarIsClear){
+      setStartDate(new Date())
+      setEndDate(null)
+    }
+  },[calendarIsClear])
 
   //Work around for calendar styling
   useEffect(()=> {
