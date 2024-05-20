@@ -5,6 +5,7 @@ import Leftcolumn from '@/component/course/left-column'
 import Rightcolumn from '@/component/course/right-column'
 import courseData from '../../data/coursesData.json'
 import styles from './course.module.scss'
+import courseData from '../../data/coursesData.json'
 
 export default function CourseList() {
   const [filters, setFilters] = useState({})

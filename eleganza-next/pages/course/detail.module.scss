@@ -1,5 +1,6 @@
 .container {
   padding: 20px;
+  width: 100%;
 }
 
 .back-button {
@@ -17,8 +18,9 @@
 }
 
 .course-details-container {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   margin-top: 10px;
 }
 

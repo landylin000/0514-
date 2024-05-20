@@ -117,6 +117,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .action-icons {
+    margin-right: 5px;
+  }
+}
+
 .overlaybg {
   position: fixed;
   top: 0;

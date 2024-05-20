@@ -128,16 +128,23 @@ export default function Rightcolumn({ filters, sortOrder, searchCourseList }) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  console.log(courses)
+
   return (
     <div className={styles['right-column']}>
-      {courses.map((course, index) => (
-        <Card
-          key={index}
-          course={course}
-          onClick={() => handleCardClick(course.course_id)}
-        />
-      ))}
-      {totalCourses > 0 && (
+      {courses.length > 0 ? (
+        courses.map((course, index) => (
+          <Card
+            key={index}
+            course={course}
+            onClick={() => handleCardClick(course.course_id)}
+            onAddToCart={() => handleAddToCart(course.course_id)}
+          />
+        ))
+      ) : (
+        <p>沒有符合條件的課程</p>
+      )}
+      {courses > 0 && (
         <Pagination
           currentPage={currentPage}
           totalCourses={totalCourses} // 传递 totalCourses

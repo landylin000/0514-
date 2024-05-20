@@ -4,7 +4,24 @@ import CourseDetailRight from '@/component/course/course_detail/right-column'
 import CourseDetailLeft from '@/component/course/course_detail/left-column' 
 import CommentsPage from '@/component/article/comment' 
 import axios from 'axios'
-import styles from './detail.module.scss' 
+import styles from './detail.module.scss'
+import courseData from '../../data/coursesData.json'
+
+const dummy = {
+  "course_id": 101,
+  "course_class_id": 1,
+  "teacher_id": 1,
+  "course_name": "小提琴演奏初階個別課",
+  "course_img": "LinWenxi.jpg",
+  "course_price": 1000,
+  "course_style": "Classical",
+  "course_description": "這是一個專為初學者設計的小提琴課程，旨在為學生提供穩健的音樂基礎，讓他們建立起良好的演奏技巧和音樂理解能力。課程將從最基本的樂理知識和小提琴技巧開始，逐步引導學生進入音樂的世界，享受音樂帶來的樂趣和成就感。",
+  "course_payment":"學費為單堂一小時費用，教師和學生自訂上課時間",
+  "quota": 8,
+  "teacher_name": "LinWenxi",
+  "start_date": "2024-06-01",
+  "start_time": "10:00"
+}
 
 // 從後端 API 獲取課程詳情和評論
 export async function getServerSideProps(context) {
@@ -53,9 +70,11 @@ export default function CourseDetailPage({ course, comments }) {
   const user = {} // 從某處獲取的用戶信息
   console.log(course)
 
-  if (!course) {
-    return <p>課程未找到</p>
-  }
+  // if (!course) {
+  //   return <p>課程未找到</p>
+  // }
+
+  course = dummy;
 
   return (
     <>
@@ -70,12 +89,12 @@ export default function CourseDetailPage({ course, comments }) {
           返回
         </button>
         <div className={styles['course-details-container']}>
-          <CourseDetailLeft course={course} />
-          <CourseDetailRight course={course} />
+          <CourseDetailLeft course={dummy} />
+          <CourseDetailRight course={dummy} />
         </div>
         <div className={styles['comments-container']}>
           <CommentsPage
-            courseId={course.course_id}
+            courseId={dummy.course_id}
             userId={user ? user.id : null}
             comments={comments}
           />
