@@ -134,23 +134,25 @@ function Modal({
               <div className={styles['form-word']}>評論:</div>
               <textarea
                 id="comment-text"
+                className={styles.textContainer}
                 rows="4"
-                cols="50"
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
             </label>
           </div>
-          <button type="submit" className={styles['button-form']}>
-            送出
-          </button>
-          <button
-            type="button"
-            className={styles['button-form']}
-            onClick={toggleModal}
-          >
-            關閉
-          </button>
+          <div className={styles.submitButtonContainer}>
+            <button type="submit" className={styles['button-form']}>
+              送出
+            </button>
+            <button
+              type="button"
+              className={styles['button-form']}
+              onClick={toggleModal}
+            >
+              關閉
+            </button>
+          </div>
         </form>
       </div>
     </div>

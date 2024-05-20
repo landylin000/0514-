@@ -1,16 +1,23 @@
 /* Schedule.module.css */
 .schedule {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 800px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+  .weekGrid {
+    max-width: 360px;
+    overflow: scroll;
   }
+}
   
   .weekNavigation {
     display: flex;
@@ -38,6 +45,17 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
     width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .weekGrid {
+      max-width: 360px;
+      overflow: scroll;
+    }
+
+    .weekHeader {
+      text-align: center;
+    }
   }
   
   .dayColumn {

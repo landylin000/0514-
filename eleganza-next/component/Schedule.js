@@ -95,7 +95,7 @@ const Schedule = ({ availableTimes, onTimeSelect }) => {
     <div className={styles.schedule}>
       <div className={styles.weekNavigation}>
         <button onClick={handlePrevWeek}>{'<'}</button>
-        <span>
+        <span className={styles.weekHeader}>
           {formatDate(selectedWeek.start)} - {formatDate(selectedWeek.end)}
         </span>
         <button onClick={handleNextWeek}>{'>'}</button>

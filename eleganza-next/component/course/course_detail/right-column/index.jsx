@@ -122,7 +122,7 @@ export default function CourseDetailRight({ course }) {
           onTimeSelect={setSelectedTime}
         />
         <div className={styles['course-details-bottom']}>
-          <div className={styles['action-icons']}>
+          <div className={styles.actionIcons}>
             <a href="#" onClick={handleDecrease}>
               <img src="/icons/icon-minus.svg" alt="minus" />
             </a>

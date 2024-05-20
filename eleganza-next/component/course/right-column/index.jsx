@@ -150,10 +150,12 @@ export default function Rightcolumn({ filters, sortOrder, courses }) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  console.log(courses)
+
   return (
     <div className={styles['right-column']}>
-      {displayCourses.length > 0 ? (
-        displayCourses.map((course, index) => (
+      {courses.length > 0 ? (
+        courses.map((course, index) => (
           <Card
             key={index}
             course={course}
@@ -164,7 +166,7 @@ export default function Rightcolumn({ filters, sortOrder, courses }) {
       ) : (
         <p>沒有符合條件的課程</p>
       )}
-      {totalCourses > 0 && (
+      {courses > 0 && (
         <Pagination
           currentPage={currentPage}
           totalCourses={totalCourses}

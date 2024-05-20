@@ -61,7 +61,7 @@
         }
       }
 
-      .action-icons {
+      .actionIcons {
         display: flex;
         align-items: center;
         margin-right: 80px;
@@ -114,6 +114,12 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .actionIcons {
+    margin-right: 5px !important;
   }
 }
 

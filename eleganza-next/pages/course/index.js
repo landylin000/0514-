@@ -5,6 +5,7 @@ import Navbar from '@/component/course/navbar'
 import Leftcolumn from '@/component/course/left-column'
 import Rightcolumn from '@/component/course/right-column'
 import styles from './course.module.scss'
+import courseData from '../../data/coursesData.json'
 
 export default function CourseList() {
   const [filters, setFilters] = useState({
@@ -83,7 +84,7 @@ export default function CourseList() {
         <Rightcolumn
           filters={filters}
           sortOrder={sortOrder}
-          courses={courses}
+          courses={courseData}
         />
       </div>
     </div>
