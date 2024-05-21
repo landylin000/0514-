@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './navbar.module.scss';
+import { searchHelper } from '@/util/searchHelper';
 
-export default function Navbar({ onCourseFilter, onSortChange }) {
+export default function Navbar({ courseList, onCourseFilter, onSortChange, onSearchChange }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -23,8 +24,13 @@ export default function Navbar({ onCourseFilter, onSortChange }) {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    // 可以在此处处理搜索逻辑
+    console.log(event.target.value)
+    onSearchChange(searchHelper(courseList, event.target.value));
   };
+
+  useEffect(()=>{
+    onSearchChange(courseList, '')
+  },[])
 
   return (
     <nav className={styles.navbar}>
@@ -53,7 +59,7 @@ export default function Navbar({ onCourseFilter, onSortChange }) {
         <input
           type="text"
           placeholder="搜尋課程..."
-          value={searchTerm}
+          // value={searchTerm}
           onChange={handleSearchChange}
           className={styles.searchInput}
         />

@@ -1,11 +1,13 @@
-import UserLayout from '@/component/users/user-layout';
-import Head from 'next/head';
+import UserLayout from '@/component/users/user-layout'
+import Head from 'next/head'
+import { AuthProvider } from '@/hooks/use-auth'
 
-export default function UsersIndex() {
-    
-}
+export default function UsersIndex() {}
 
 UsersIndex.getLayout = function (page) {
-  return <UserLayout>{page}</UserLayout>
+  return (
+    <AuthProvider>
+      <UserLayout>{page}</UserLayout>
+    </AuthProvider>
+  )
 }
-

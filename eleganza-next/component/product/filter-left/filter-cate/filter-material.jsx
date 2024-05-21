@@ -36,10 +36,10 @@ export default function FilterMaterial({
                   option = v.back_and_sides
                   break
                 case '指板':
-                  option = v.neck
+                  option = v.fingerboard
                   break
                 case '琴頸':
-                  option = v.fingerboard
+                  option = v.neck
                   break
               }
               if (!repeat.has(option) && option) {
@@ -50,8 +50,8 @@ export default function FilterMaterial({
                       className={styles['checkbox']}
                       type="checkbox"
                       id={`${option + index}`}
-                      checked={checkboxStatus[option + index] || false}
-                      onChange={() => handleCheckboxStatus(option + index)}
+                      checked={checkboxStatus[option + sortName] || false}
+                      onChange={() => handleCheckboxStatus(option + sortName)}
                     />
                     <label htmlFor={`${option + index}`}>{`${option}`}</label>
                   </div>

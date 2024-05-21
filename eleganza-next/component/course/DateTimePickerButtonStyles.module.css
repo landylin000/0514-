@@ -1,5 +1,8 @@
+@import 'react-datepicker/dist/react-datepicker.css';
+
 .reactDatepicker {
   position: relative;
+  border: 2px;
 }
 
 .reactDatepicker .react-datepicker {
@@ -7,9 +10,8 @@
   border-radius: 5px !important; /* 自定义边框圆角 */
 }
 
-.reactDatepicker .react-datepicker__header {
-  background-color: #f0f0f0 !important; /* 自定义标题背景颜色 */
-  border-bottom: 1px solid #63e41e !important; /* 自定义标题底部边框 */
+.reactDatepicker > div > div > div > div > .react-datepicker__header {
+  background-color: #322826 !important; /* 自定义标题背景颜色 */
 }
 
 .reactDatepicker .react-datepicker__current-month,

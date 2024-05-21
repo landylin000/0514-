@@ -6,14 +6,57 @@ import teachersData from '../../../data/teachersData.json'
 import { useRouter } from 'next/router'
 import styles from './right-column.module.scss'
 
-export default function Rightcolumn({ filters, sortOrder }) {
-  const [courses, setCourses] = useState([])
+export default function Rightcolumn({ filters, sortOrder, searchCourseList }) {
+  const [courseToFilter, setCourseToFilter] = useState(courseData)
+  const [courses, setCourses] = useState(courseData)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCourses, setTotalCourses] = useState(0) // 新增 totalCourses state
   const coursesPerPage = 6
   const router = useRouter()
 
-  useEffect(() => {
+  const applyFilters = (courses, filters) => {
+    return courses.filter((course) => {
+      return Object.entries(filters).every(([key, value]) => {
+        if (!value) return true
+        if (key === 'dateSearchRange') {
+          const { startDate, endDate } = value
+          if (!!startDate && !!endDate) {
+            const courseStartDate = new Date(course.start_date)
+            const startDateObj = new Date(startDate)
+            const endDateObj = new Date(endDate)
+            return (
+              courseStartDate >= startDateObj && courseStartDate <= endDateObj
+            )
+          }
+          return true
+        }
+        if (key === 't_years') {
+          return value.includes(String(course.t_years))
+        }
+        if (key === 'course_style') {
+          return value.includes(course.course_style)
+        }
+        return course[key] == value
+      })
+    })
+  }
+
+  const sortCourses = (courses, sortOrder) => {
+    if (sortOrder === 'priceAsc') {
+      return courses.slice().sort((a, b) => a.course_price - b.course_price)
+    } else if (sortOrder === 'priceDesc') {
+      return courses.slice().sort((a, b) => b.course_price - a.course_price)
+    }
+    return courses
+  }
+
+  const paginateCourses = (courses, currentPage, coursesPerPage) => {
+    const indexOfLastCourse = currentPage * coursesPerPage
+    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage
+    return courses.slice(indexOfFirstCourse, indexOfLastCourse)
+  }
+
+  const generateCourseData = (courseData, teachersData) => {
     const teacherMap = teachersData.reduce((map, teacher) => {
       map[teacher.teacher_id] = {
         t_years: teacher.t_years,
@@ -22,7 +65,7 @@ export default function Rightcolumn({ filters, sortOrder }) {
       return map
     }, {})
 
-    const enhancedCourses = courseData.map((course) => {
+    return courseData.map((course) => {
       const teacher = teacherMap[course.teacher_id]
       return {
         ...course,
@@ -30,41 +73,51 @@ export default function Rightcolumn({ filters, sortOrder }) {
         t_years: teacher ? teacher.t_years : null,
       }
     })
+  }
 
-    let filteredCourses = enhancedCourses.filter((course) => {
-      return Object.entries(filters).every(([key, value]) => {
-        if (!value) return true // 如果过滤值为空，不过滤该条件
-        if (key === 't_years') {
-          return value.includes(String(course.t_years)) // 教师年资过滤
-        }
-        if (key === 'course_style') {
-          return value.includes(course.course_style) // 音乐风格过滤
-        }
-        return course[key] == value // 其他过滤
-      })
-    })
-
-    // 排序逻辑
-    if (sortOrder === 'priceAsc') {
-      filteredCourses.sort((a, b) => a.course_price - b.course_price)
-    } else if (sortOrder === 'priceDesc') {
-      filteredCourses.sort((a, b) => b.course_price - a.course_price)
-    }
-
-    setTotalCourses(filteredCourses.length) // 更新 totalCourses
-    const indexOfLastCourse = currentPage * coursesPerPage
-    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage
-    const currentCourses = filteredCourses.slice(
-      indexOfFirstCourse,
-      indexOfLastCourse,
+  const updateCourses = (
+    courseData,
+    teachersData,
+    filters,
+    sortOrder,
+    currentPage,
+    coursesPerPage,
+  ) => {
+    const enhancedCourses = generateCourseData(courseData, teachersData)
+    let filteredCourses = applyFilters(enhancedCourses, filters)
+    filteredCourses = sortCourses(filteredCourses, sortOrder)
+    const totalCourses = filteredCourses.length
+    const currentCourses = paginateCourses(
+      filteredCourses,
+      currentPage,
+      coursesPerPage,
     )
+    return { totalCourses, currentCourses }
+  }
 
+  useEffect(() => {
+    const { totalCourses, currentCourses } = updateCourses(
+      courseToFilter,
+      teachersData,
+      filters,
+      sortOrder,
+      currentPage,
+      coursesPerPage,
+    )
+    setTotalCourses(totalCourses)
     setCourses(currentCourses)
-    const totalPages = Math.ceil(filteredCourses.length / coursesPerPage)
+    const totalPages = Math.ceil(totalCourses / coursesPerPage)
     if (currentPage > totalPages) {
-      setCurrentPage(1) // 如果当前页超过总页数，重置为第一页
+      setCurrentPage(1)
     }
-  }, [filters, sortOrder, currentPage])
+  }, [courseToFilter, teachersData, filters, sortOrder, currentPage])
+
+  useEffect(() => {
+    if (searchCourseList.length > 0) {
+      setCourseToFilter(searchCourseList)
+      setCourses(searchCourseList)
+    }
+  }, [searchCourseList])
 
   const handleCardClick = (courseId) => {
     router.push(`/course/${courseId}`)

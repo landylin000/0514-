@@ -1,137 +1,190 @@
-import React, { useState, useContext, createContext, useEffect } from 'react'
+import { createContext, useState, useContext, useEffect } from 'react'
+import axios from 'axios'
 import { useRouter } from 'next/router'
-// import axiosInstance from '@/services/axios-instance'
-import { checkAuth, getFavs } from '@/services/user'
 
 const AuthContext = createContext(null)
 
-// 註: 如果使用google登入會多幾個欄位(iat, exp是由jwt token來的)
-// 上面資料由express來(除了password之外)
-//   {
-//     "id": 1,
-//     "name": "哈利",
-//     "username": "herry",
-//     "email": "herry@test.com",
-//     "birth_date": "1980-07-13",
-//     "sex": "男",
-//     "phone": "0906102808",
-//     "postcode": "330",
-//     "address": "桃園市桃園區劉南路377號18樓",
-//     "google_uid": null,
-//     "line_uid": null,
-//     "photo_url": null,
-//     "line_access_token": null,
-//     "created_at": "2023-11-01T14:12:59.000Z",
-//     "updated_at": "2023-11-01T14:12:59.000Z",
-//     "iat": 1698852277,
-//     "exp": 1698938677
-// }
-
-// 初始化會員狀態(登出時也要用)
-// 只需要必要的資料即可，沒有要多個頁面或元件用的資料不需要加在這裡
-// !!注意JWT存取令牌中只有id, username, google_uid, line_uid在登入時可以得到
-export const initUserData = {
-  id: 0,
-  username: '',
-  google_uid: '',
-  line_uid: '',
-  name: '',
-  email: '',
-}
-
-export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({
-    // 這邊暫時寫一個會員ID
-    isAuth: true,
-    user: {
-      id: '123',
-      name: 'Eleganza',
-    },
-
-    // isAuth: false,
-    // userData: initUserData,
-  })
-
-  // 我的最愛清單使用
-  const [favorites, setFavorites] = useState([])
-
-  // 得到我的最愛
-  const handleGetFavorites = async () => {
-    const res = await getFavs()
-    //console.log(res.data)
-    if (res.data.status === 'success') {
-      setFavorites(res.data.data.favorites)
-    }
+export function AuthProvider({ children }) {
+  // 解析accessToken用的函式
+  const parseJwt = (token) => {
+    const base64Payload = token.split('.')[1]
+    const payload = Buffer.from(base64Payload, 'base64')
+    return JSON.parse(payload.toString())
   }
 
-  useEffect(() => {
-    if (auth.isAuth) {
-      // 成功登入後要執行一次向伺服器取得我的最愛清單
-      handleGetFavorites()
-    } else {
-      // 登出時要設回空陣列
-      setFavorites([])
-    }
-  }, [auth])
-
+  const [auth, setAuth] = useState({
+    isAuth: false,
+    userData: null,
+    token: null,
+    isLoggedIn: false,
+    userId: null,
+  })
   const router = useRouter()
 
-  // 登入頁路由
-  const loginRoute = '/test/user'
-  // 隱私頁面路由，未登入時會，檢查後跳轉至登入頁
-  const protectedRoutes = [
-    '/test/user/status',
-    '/test/user/profile',
-    '/test/user/profile-password',
-  ]
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    let userData = null
 
-  // 檢查會員認証用
-  // 每次重新到網站中，或重新整理，都會執行這個函式，用於向伺服器查詢取回原本登入會員的資料
-  const handleCheckAuth = async () => {
-    const res = await checkAuth()
+    // 檢查是否有存儲的用戶數據
+    const storedUserData = localStorage.getItem('user')
+    if (storedUserData) {
+      userData = JSON.parse(storedUserData)
+      console.log(storedUserData)
+    }
 
-    // 伺服器api成功的回應為 { status:'success', data:{ user } }
-    if (res.data.status === 'success') {
-      // 只需要initUserData的定義屬性值
-      const dbUser = res.data.data.user
-      const userData = { ...initUserData }
+    if (token) {
+      const parsedData = parseJwt(token)
+      setAuth({
+        token: token,
+        isLoggedIn: true,
+        userData: parsedData,
+        isAuth: true,
+        userId: parsedData.id,
+      })
+    }
+  }, [])
 
-      for (const key in userData) {
-        if (Object.hasOwn(dbUser, key)) {
-          userData[key] = dbUser[key] || ''
-        }
+  const [user, setUser] = useState({
+    useremail: '',
+    password: '',
+    phone: '',
+    name: '',
+    account: '',
+    newPassword: '',
+    newPasswordConfirm: '',
+  })
+
+  const login = async (email, password) => {
+    try {
+      // 发送身份验证请求
+      const response = await fetch(
+        'http://localhost:3005/api/home-myaccount/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_email: email,
+            user_password: password,
+          }),
+        },
+      )
+
+      const data = await response.json()
+      console.log(data)
+
+      if (data.status === 'success') {
+        // 将 accessToken 存储到 localStorage
+        localStorage.setItem('accessToken', data.data.accessToken)
+        localStorage.setItem('userId', data.data.userId)
+
+        // 更新用户认证状态和数据
+        const parsedData = parseJwt(data.data.accessToken)
+        setAuth({
+          token: data.data.accessToken,
+          isLoggedIn: true,
+          userData: parsedData,
+          isAuth: true,
+          userId: parsedData.id,
+        })
+
+        console.log(parsedData)
+
+        router.push('/users/account-center/account-center')
+        alert('登入成功')
+      } else {
+        // 处理登录失败的情况
+        console.error('Login failed')
+        alert('登入失敗，請檢查帳號和密碼')
       }
-      // 設到全域狀態中
-      setAuth({ isAuth: true, userData })
-    } else {
-      console.warn(res.data)
-
-      // 在這裡實作隱私頁面路由的跳轉
-      if (protectedRoutes.includes(router.pathname)) {
-        router.push(loginRoute)
-      }
+    } catch (error) {
+      // 处理错误
+      console.error('Error occurred during login:', error)
+      alert('登录时发生错误')
     }
   }
 
-  // didMount(初次渲染)後，向伺服器要求檢查會員是否登入中
-  useEffect(() => {
-    if (router.isReady && !auth.isAuth) {
-      handleCheckAuth()
+  const logout = async () => {
+    const res = await fetch('http://localhost:3005/api/home-myaccount/logout', {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth.token}`, // 添加授權標頭
+      },
+      body: JSON.stringify({}),
+    })
+
+    const data = await res.json()
+
+    if (data.status === 'success') {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userId')
+      setAuth({
+        token: null,
+        isLoggedIn: false,
+        userData: null,
+        isAuth: false,
+        userId: null,
+      })
+      router.push(`/`)
+      alert('登出成功')
+    } else {
+      alert(data.message)
     }
-    // 下面加入router.pathname，是為了要在向伺服器檢查後，
-    // 如果有比對到是隱私路由，就執行跳轉到登入頁面工作
-    // 注意有可能會造成向伺服器要求多次，此為簡單的實作範例
-    // eslint-disable-next-line
-  }, [router.isReady, router.pathname])
+  }
+
+  const updateUserData = async (updatedData) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken')
+      if (!accessToken) throw new Error('Access token not found')
+
+      const response = await fetch(
+        `http://localhost:3005/api/home-myaccount/${auth.userData.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(updatedData),
+        },
+      )
+
+      if (!response.ok) throw new Error('Failed to update user data')
+
+      const data = await response.json()
+      console.log('User data updated successfully:', data)
+      alert('修改成功。')
+    } catch (error) {
+      console.error('Error updating user data:', error)
+      // 在這裡處理錯誤，例如顯示一個錯誤提示給用戶
+    }
+  }
+
+  const handleCheck = async () => {
+    const res = await fetch('http://localhost:3005/api/home-myaccount/check', {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await res.json()
+
+    if (data.status === 'success') {
+      console.log(data.data)
+    } else {
+      alert(data.message)
+    }
+  }
 
   return (
     <AuthContext.Provider
-      value={{
-        auth,
-        setAuth,
-        favorites,
-        setFavorites,
-      }}
+      value={{ auth, login, logout, updateUserData, handleCheck }}
     >
       {children}
     </AuthContext.Provider>

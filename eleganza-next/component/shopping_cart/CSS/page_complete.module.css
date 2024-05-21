@@ -5,7 +5,7 @@
     justify-content: center;
     position: fixed;
     top: 261px;
-    left: 150%; 
+    left: 200%; 
     margin-top: 60px;
 
 }
@@ -157,4 +157,5 @@
     background-color: #322826;
     padding: 12px 32px;
     color: #FFFDFD;
+    text-decoration: none;
 }

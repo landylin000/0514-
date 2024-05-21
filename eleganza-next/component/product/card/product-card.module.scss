@@ -1,6 +1,5 @@
 .product {
-  min-width: 158px;
-  min-height: 226px;
+  min-width: 140px;
   background-color: var(--color-text-light);
   border-radius: 8px;
   /* drop shadow */
@@ -8,6 +7,20 @@
 
   .info {
     border-top: 0.5px solid var(--stroke, #9c9191);
+    .brand {
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+  & .like {
+    & :hover {
+      color: var(--color-secondary-medium);
+    }
+  }
+  & :hover {
+    .product-name {
+      color: var(--color-secondary-medium);
+    }
   }
 }
 .obj-fit {
@@ -19,8 +32,9 @@
 @media (max-width: 992px) {
   .info {
     font-size: 12px;
-    .brand{
+    .brand {
       font-weight: 600;
+      font-size: 12px;
     }
   }
 }

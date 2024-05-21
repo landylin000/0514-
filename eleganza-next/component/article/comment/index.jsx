@@ -2,35 +2,44 @@ import React, { useState } from 'react'
 import styles from './comment.module.scss'
 import CommentCard from './CommentCard'
 import StarRating from '../star-rating'
-
+import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
 export default function CommentsPage({
-  userId,
   articleId,
   productId,
   courseId,
-  comments: initialComments, // 使用不同的名字来避免命名冲突
+  comments: initialComments, // 使用不同的名字來避免命名衝突
 }) {
+  const { auth } = useAuth()
   const [showModal, setShowModal] = useState(false)
-  const [comments, setComments] = useState(initialComments) // 初始化时使用传入的评论数据
-
+  const [comments, setComments] = useState(initialComments) //初始化時使用傳入的評論數據
   const addCommentToList = (newComment) => {
     setComments((prevComments) => [...prevComments, newComment])
   }
-
   const toggleModal = () => {
-    setShowModal((prev) => !prev)
+    if (!auth.userId) {
+      // 如果未登入，顯示錯誤提示
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '請先登入',
+        confirmButtonText: '確定',
+        confirmButtonColor: '#322826',
+      })
+    } else {
+      // 如果已登入，則顯示或隱藏模態窗口
+      setShowModal((prev) => !prev)
+    }
   }
-
   return (
     <>
       <button className={styles['comment-button']} onClick={toggleModal}>
         我要評論
       </button>
-
       {showModal && ( // 根據 showModal 的值顯示或隱藏模態窗口
         <Modal
           toggleModal={toggleModal}
-          userId={userId}
+          userId={auth.userId} // 傳遞 userId
           articleId={articleId}
           productId={productId}
           courseId={courseId}
@@ -47,7 +56,6 @@ export default function CommentsPage({
     </>
   )
 }
-
 // 定義模態窗口組件-----------------------------------
 function Modal({
   toggleModal,
@@ -59,12 +67,20 @@ function Modal({
 }) {
   const [rating, setRating] = useState(0)
   const [commentText, setCommentText] = useState('')
-
   const handleSubmit = async (event) => {
     event.preventDefault()
+    // 判斷登入
+    if (!userId)
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '請先登入',
+        confirmButtonText: '確定',
+        confirmButtonColor: '#322826',
+      })
     //會員資料
     const formData = {
-      userId: 0, // 用户ID 等會員接起來
+      userId: userId, // 用户ID 等會員接起來
       articleId: articleId, // 文章ID
       productId: productId,
       courseId: courseId,
@@ -72,8 +88,7 @@ function Modal({
       commentText: commentText,
     }
     console.log(formData) // 列印表單
-
-    // 模擬提交到後端
+    // 提交到後端
     try {
       const response = await fetch('http://localhost:3005/api/comments', {
         method: 'POST',
@@ -81,30 +96,37 @@ function Modal({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData), //表單打印測試
-
-        // body: JSON.stringify({
-        //   rating,
-        //   commentText,
-        // }),
       })
-
       if (response.ok) {
         const newComment = await response.json()
         addCommentToList(newComment.data.comment)
         console.log('評論提交成功')
         setRating(0) // 重設評分
         setCommentText('') // 清空評論框
-        alert('評論已提交') // 提供用戶反饋
+        // alert('評論已提交') // 提供用戶反饋
+        Swal.fire({
+          icon: 'success',
+          title: '成功',
+          text: '評論提交成功',
+          confirmButtonText: '確定',
+          confirmButtonColor: '#322826',
+        })
         toggleModal()
       } else {
         throw new Error('Network response was not ok.')
       }
     } catch (error) {
       console.error('評論提交失敗:', error)
-      alert('提交失敗，請稍後再試') // 提供用戶反饋
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '提交失敗，請登入後再試',
+        confirmButtonText: '確定',
+        confirmButtonColor: '#322826',
+      })
+      // alert('提交失敗，請稍後再試') // 提供用戶反饋
     }
   }
-
   // 表單
   return (
     <div className={styles['modal-background']}>

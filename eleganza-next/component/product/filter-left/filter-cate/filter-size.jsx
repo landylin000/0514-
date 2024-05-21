@@ -7,7 +7,7 @@ export default function FilterSize({
   handleCheckboxStatus,
 }) {
   let violinSize
-  if (size === 3) {
+  if (size === '3') {
     violinSize = '3/4'
   } else {
     violinSize = '4/4'
