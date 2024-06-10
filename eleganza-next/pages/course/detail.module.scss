@@ -1,14 +1,34 @@
-.course-details-container {
-    display: flex; /* 使用Flexbox排版 */
-    /* justify-content: space-between; */
-    margin-bottom: 60px;
-}
-.grid-item-left {
-    flex-grow: 1; /* 左列自動填滿剩餘空間 */
-    display: flex;
-    flex-direction: column;
+.container {
+  padding: 20px;
 }
 
-.grid-item-right {
-    flex-grow: 1; /* 右列自動填滿剩餘空間 */
+.back-button {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  img {
+    margin-right: 5px;
+  }
+}
+
+.course-details-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.comments-container {
+  margin-top: 40px;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: #9c9191;
+  margin: 10px 0;
 }

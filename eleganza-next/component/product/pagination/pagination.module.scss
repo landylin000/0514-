@@ -16,5 +16,10 @@
         color: var(--color-text-light);
       }
     }
+    .current {
+      border-radius: 4px;
+      background: var(--color-secondary-dark);
+      color: var(--color-text-light);
+    }
   }
 }

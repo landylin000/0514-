@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap; /* 自动换行 */
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 100%; /* 占满父容器的宽度 */
     height: auto; /* 根据内容自动调整高度 */

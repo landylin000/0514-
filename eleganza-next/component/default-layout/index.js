@@ -11,8 +11,9 @@ export default function DefaultLayout({ children }) {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <Header />
-      <main>{children}</main>
-
+      <main>
+        {children}
+      </main>
       <Footer />
     </>
   )

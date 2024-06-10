@@ -2,8 +2,9 @@ import React from 'react'
 import styles from './bread-crumb.module.scss'
 import Link from 'next/link'
 import Router from 'next/router'
+import Searchbar from '../search-bar/Searchbar'
 
-export default function BreadCrumb() {
+export default function BreadCrumb({ handleClick, showInput }) {
   function handleBack() {
     window.history.go(-1)
   }
@@ -21,13 +22,13 @@ export default function BreadCrumb() {
           </span>
         </div>
         <div className={`${styles['bread-crumb-m']} d-block d-md-none`}>
-          <div className="d-flex justify-content-between align-item-center">
+          <div className="d-flex justify-content-between align-items-center">
             <button onClick={handleBack}>
               <img className="mb-1" src="/icons/icon-chevron-left.svg" alt="" />{' '}
               上一頁
             </button>
             <span>
-              <img className="mb-1" src="/icons/icon-search.svg" alt="" />
+              <Searchbar handleClick={handleClick} showInput={showInput} />
             </span>
           </div>
         </div>
