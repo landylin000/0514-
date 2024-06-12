@@ -14,30 +14,41 @@ function CustomDatePicker({ getStartDate, getEndDate, calendarIsClear }) {
   }
 
   useEffect(()=>{
-    let allDateElement = document.querySelectorAll('.react-datepicker__day');
-    let selectedDateElement = document.querySelector('.react-datepicker__day--keyboard-selected'); 
-
-    allDateElement.forEach(x => x.style.backgroundColor = 'white')
-    allDateElement.forEach(x => x.style.color = '#000')
-    selectedDateElement.style.backgroundColor = '#322826';
-    selectedDateElement.style.color = '#fff';
-    getStartDate(startDate, 'dateSearchRange');
+    if(startDate !== null){
+      let allDateElement = document.querySelectorAll('.react-datepicker__day');
+      let selectedDateElement = document.querySelector('.react-datepicker__day--keyboard-selected'); 
+      
+      allDateElement.forEach(x => x.style.backgroundColor = 'white')
+      allDateElement.forEach(x => x.style.color = '#000')
+      selectedDateElement.style.backgroundColor = '#322826';
+      selectedDateElement.style.color = '#fff';
+      getStartDate(startDate, 'dateSearchRange');
+    }
   },[startDate])
-
+  
   useEffect(()=>{
-    let selectedDateElement = document.querySelector('.react-datepicker__day--keyboard-selected');
-    let daysInRangeElements = document.querySelectorAll('.react-datepicker__day--in-range');
-
-    selectedDateElement.style.backgroundColor = '#322826';
-    selectedDateElement.style.color = '#fff';
-    daysInRangeElements.forEach(x => x.style.backgroundColor = '#322826')
-    daysInRangeElements.forEach(x => x.style.color = '#fff')
-    getEndDate(endDate, 'dateSearchRange');
+    if(endDate !== null){
+      let selectedDateElement = document.querySelector('.react-datepicker__day--keyboard-selected');
+      let daysInRangeElements = document.querySelectorAll('.react-datepicker__day--in-range');
+      
+      selectedDateElement.style.backgroundColor = '#322826';
+      selectedDateElement.style.color = '#fff';
+      daysInRangeElements.forEach(x => x.style.backgroundColor = '#322826')
+      daysInRangeElements.forEach(x => x.style.color = '#fff')
+      getEndDate(endDate, 'dateSearchRange');
+    }
   },[endDate])
-
+  
   useEffect(()=>{
     if(calendarIsClear){
-      setStartDate(new Date())
+      let allDateElement = document.querySelectorAll('.react-datepicker__day');
+      let todayElement = document.querySelector('.react-datepicker__day--today'); 
+      allDateElement.forEach(x => x.style.backgroundColor = 'white')
+      allDateElement.forEach(x => x.style.color = '#000')
+      todayElement.style.backgroundColor = '#322826';
+      todayElement.style.color = '#fff';
+      todayElement.style.borderRadius = '0.3rem';
+      setStartDate(null)
       setEndDate(null)
     }
   },[calendarIsClear])
@@ -47,17 +58,11 @@ function CustomDatePicker({ getStartDate, getEndDate, calendarIsClear }) {
     let headerElement = document.querySelector('.react-datepicker__header');
     let currentMonth = document.querySelector('.react-datepicker__current-month');
     let dayElements = document.querySelectorAll('.react-datepicker__day-name');
-    // let selectedDateElement = document.querySelector('.react-datepicker__day--keyboard-selected');
-    // let daysInRangeElements = document.querySelectorAll('.react-datepicker__day--in-range');
 
     if (headerElement) {
       headerElement.style.backgroundColor = '#322826';
       currentMonth.style.color = 'white';
       dayElements.forEach(x => x.style.color = 'white')
-      // selectedDateElement.style.backgroundColor = '#322826';
-      // selectedDateElement.style.color = '#fff';
-      // daysInRangeElements.forEach(x => x.style.backgroundColor = '#322826')
-      // daysInRangeElements.forEach(x => x.style.color = '#fff')
     }
   })
 
