@@ -9,9 +9,6 @@ import styles from './right-column.module.scss'
 export default function Rightcolumn({ filters, sortOrder, searchCourseList }) {
   const [courseToFilter, setCourseToFilter] = useState(courseData)
   const [courses, setCourses] = useState(courseData)
-export default function Rightcolumn({ filters, sortOrder, searchCourseList }) {
-  const [courseToFilter, setCourseToFilter] = useState(courseData)
-  const [courses, setCourses] = useState(courseData)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCourses, setTotalCourses] = useState(0) // 新增 totalCourses state
   const coursesPerPage = 6

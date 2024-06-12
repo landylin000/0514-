@@ -18,6 +18,8 @@ const musicStyleOptions = ['古典', '爵士/藍調', '流行']
 const teachingExperienceOptions = ['5年以下', '5年至10年', '10年以上']
 
 export default function Leftcolumn({ filters, onFilterChange }) {
+  const [calendarIsClear, setCalendarIdClear] = useState(true);
+
   const handleCheckboxChange = (event, category) => {
     const { checked, value } = event.target
     const filterValues =
@@ -32,12 +34,20 @@ export default function Leftcolumn({ filters, onFilterChange }) {
   }
 
   const handleStartDateChange = (startDate) => {
+    setCalendarIdClear(false);
     onFilterChange('dateSearchRange', {startDate: startDate, endDate:null})
   }
 
   const handleEndDateChange = (endDate) => {
+    setCalendarIdClear(false);
     onFilterChange('dateSearchRange', { startDate: filters.dateSearchRange?.startDate, endDate: endDate })
   }
+
+  const resetDatePicker = () => {
+    setCalendarIdClear(true);
+    onFilterChange('dateSearchRange', null)
+  }
+
 
   return (
     <div>
@@ -51,6 +61,7 @@ export default function Leftcolumn({ filters, onFilterChange }) {
         <CustomDatePicker
           getStartDate={handleStartDateChange}
           getEndDate={handleEndDateChange}
+          calendarIsClear={calendarIsClear}
           calendarIsClear={calendarIsClear}
         />
       </div>
