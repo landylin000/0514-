@@ -44,3 +44,10 @@
   background-color: #63e41e !important; /* 自定义悬停背景颜色 */
   color: #fff !important; /* 自定义悬停文字颜色 */
 }
+
+@media screen and (max-width: 376px) {
+  .reactDatepicker {
+    display: flex;
+    justify-content: center;
+  }
+}

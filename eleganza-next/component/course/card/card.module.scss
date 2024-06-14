@@ -69,3 +69,20 @@
     margin: 0;
   }
 }
+
+@media screen and (max-width: 376px) {
+  .card-body {
+    flex-direction: column;
+  }
+  .image-container {
+    margin-right: 0;
+    width: 200px;
+    height: 200px;
+  }
+  .card-content {
+    margin-top: 10px;
+  }
+  .card-footer {
+    align-items: flex-start
+  }
+}

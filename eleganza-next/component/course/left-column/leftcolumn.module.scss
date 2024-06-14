@@ -93,3 +93,10 @@
   background-color: #322826 !important; /* 设置键盘选中日期背景颜色 */
   color: #fff !important; /* 设置键盘选中日期文字颜色 */
 }
+
+@media screen and (max-width: 376px) {
+  .filterContainer {
+    display: flex;
+    justify-content: center;
+  }
+}

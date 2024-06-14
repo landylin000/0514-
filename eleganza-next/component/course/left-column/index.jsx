@@ -62,40 +62,41 @@ export default function Leftcolumn({ filters, onFilterChange }) {
           getStartDate={handleStartDateChange}
           getEndDate={handleEndDateChange}
           calendarIsClear={calendarIsClear}
-          calendarIsClear={calendarIsClear}
         />
       </div>
-      <div className={styles['filter-section']}>
-        <p>教學年資</p>
-        {teachingExperienceOptions.map((option) => (
-          <div key={option}>
-            <input
-              className={styles['checkbox-style']}
-              type="checkbox"
-              id={`t_years-${option}`}
-              name={`t_years-${option}`}
-              value={option}
-              onChange={(e) => handleCheckboxChange(e, 't_years')}
-            />
-            <label htmlFor={`t_years-${option}`}>{option}</label>
-          </div>
-        ))}
-      </div>
-      <div className={styles['filter-section']}>
-        <p>音樂風格</p>
-        {musicStyleOptions.map((option) => (
-          <div key={option}>
-            <input
-              className={styles['checkbox-style']}
-              type="checkbox"
-              id={`course_style-${option}`}
-              name={`course_style-${option}`}
-              value={option}
-              onChange={(e) => handleCheckboxChange(e, 'course_style')}
-            />
-            <label htmlFor={`course_style-${option}`}>{option}</label>
-          </div>
-        ))}
+      <div className={styles.filterContainer}>
+        <div className={styles['filter-section']}>
+          <p>教學年資</p>
+          {teachingExperienceOptions.map((option) => (
+            <div key={option}>
+              <input
+                className={styles['checkbox-style']}
+                type="checkbox"
+                id={`t_years-${option}`}
+                name={`t_years-${option}`}
+                value={option}
+                onChange={(e) => handleCheckboxChange(e, 't_years')}
+              />
+              <label htmlFor={`t_years-${option}`}>{option}</label>
+            </div>
+          ))}
+        </div>
+        <div className={styles['filter-section']}>
+          <p>音樂風格</p>
+          {musicStyleOptions.map((option) => (
+            <div key={option}>
+              <input
+                className={styles['checkbox-style']}
+                type="checkbox"
+                id={`course_style-${option}`}
+                name={`course_style-${option}`}
+                value={option}
+                onChange={(e) => handleCheckboxChange(e, 'course_style')}
+              />
+              <label htmlFor={`course_style-${option}`}>{option}</label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
